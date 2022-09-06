@@ -9,7 +9,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  // var Artist art;
   @override
   void initState() {
     super.initState();

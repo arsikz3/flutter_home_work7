@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_home_work7/detail_page.dart';
 import 'dart:convert';
 import 'package:flutter_home_work7/drawer_page.dart';
 import 'package:flutter_home_work7/fetch_file.dart';
 import 'package:flutter_home_work7/model.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -51,10 +53,11 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return ListTile(
                         onTap: (() {
-                          Navigator.of(context).pushNamed(
-                            '/detail',
-                            arguments: {'artist': art[index]},
-                          );
+                          Get.to(DetailPage(art: art[index]),
+                              duration: Duration(seconds: 1),
+                              transition: Transition.leftToRight);
+                          //Navigator.of(context).pushNamed(
+                          // '/detail', arguments: {'artist': art[index]},);
                         }),
                         title: Text(
                           art[index].name,

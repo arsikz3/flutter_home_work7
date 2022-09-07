@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_work7/model.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
-
+  DetailPage({Key? key, this.art}) : super(key: key);
+  final Artist? art;
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
@@ -16,15 +16,22 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final Artist? art = arguments['artist'] ?? null;
+    //final arguments = (ModalRoute.of(context)?.settings.arguments ??
+    //   <String, dynamic>{}) as Map;
+    //final Artist? art = arguments['artist'] ?? null;
     return Scaffold(
       appBar: AppBar(
-        title: (art != null) ? Text(art.name) : const Text(''),
+        // leading: IconButton(icon: on),
+        title:
+            (widget.art != null) ? Text(widget.art!.name) : Text('не указан'),
       ),
-      body: SingleChildScrollView(
-        child: (art != null) ? Text(art.about ?? '') : Text(''),
+      body: Container(
+        color: Colors.blue.shade100,
+        child: SingleChildScrollView(
+          child: (widget.art != null)
+              ? Center(child: Text(widget.art!.about ?? ''))
+              : Center(child: const Text('не указан')),
+        ),
       ),
     );
   }

@@ -6,6 +6,13 @@ import 'package:flutter_home_work7/fetch_file.dart';
 import 'package:flutter_home_work7/model.dart';
 import 'package:get/get.dart';
 
+Future<List<Artist>> getData() async {
+  final str = await fetchFileFromAssets('assets/artists.json');
+  final list = json.decode(str) as List<dynamic>;
+
+  return list.map((e) => Artist.fromJson(e)).toList();
+}
+
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -14,19 +21,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Artist> artists = [];
-
-  Future<List<Artist>> fetchData() async {
-    final str = await fetchFileFromAssets('assets/artists.json');
-    final list = json.decode(str) as List<dynamic>;
-    artists = list.map((e) => Artist.fromJson(e)).toList();
-    return artists;
-  }
+  late Future<List<Artist>> artists;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    artists = getData();
   }
 
   @override
@@ -39,8 +39,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         color: Colors.blue.shade200,
         child: FutureBuilder<List<Artist>>(
-          future: fetchData(),
-          initialData: [],
+          future: artists,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: Text('Please wait its loading...'));
@@ -56,14 +55,12 @@ class _HomePageState extends State<HomePage> {
                           Get.to(DetailPage(art: art[index]),
                               duration: Duration(seconds: 1),
                               transition: Transition.leftToRight);
-                          //Navigator.of(context).pushNamed(
-                          // '/detail', arguments: {'artist': art[index]},);
                         }),
                         title: Text(
                           art[index].name,
                         ));
                   },
-                  itemCount: artists.length,
+                  itemCount: art.length,
                 );
               }
             }
